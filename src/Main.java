@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -7,14 +6,18 @@ public class Main {
         User u2 = new User(2, "U2", "u2@abc.com");
         User u3 = new User(3, "U3", "u3@abc.com");
 
-        List<Expense> expenses = new ArrayList<>();
-        expenses.add(new Expense(1, "Expense 1", 10000, u3, SplitType.EXACT));
-        expenses.add(new Expense(2, "Expense 2", 15000, u1, SplitType.EQUAL));
-        expenses.add(new Expense(3, "Expense 3", 17000, u2, SplitType.PERCENTAGE));
-        expenses.add(new Expense(4, "Expense 4", 20000, u1, SplitType.EXACT));
+        List<User> users = List.of(u1, u2, u3);
+        List<SplitStrategy> strategies = List.of(new EqualSplit(), new PercentageSplit(List.of(50,30,20)), new ExactSplit(List.of(5000L, 3000L, 2000L)));
 
-        for (Expense e : expenses) {
-            System.out.println(e);
+        for (SplitStrategy strategy: strategies) {
+            List<Long> shares = strategy.calculateShares(10001, users);
+
+            long sum = 0;
+            for (long share: shares) {
+                sum += share;
+            }
+
+            System.out.println(strategy.getClass().getSimpleName() + ": " + shares + " sum=" + sum);
         }
     }
 }
