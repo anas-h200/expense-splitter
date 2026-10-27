@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -8,7 +7,7 @@ public class Main {
         User u3 = new User(3, "U3", "u3@abc.com");
 
         List<User> users = List.of(u1, u2, u3);
-        List<SplitStrategy> strategies = List.of(new EqualSplit(), new PercentageSplit(List.of(50,30,20)));
+        List<SplitStrategy> strategies = List.of(new EqualSplit(), new PercentageSplit(List.of(50,30,20)), new ExactSplit(List.of(5000L, 3000L, 2000L)));
 
         for (SplitStrategy strategy: strategies) {
             List<Long> shares = strategy.calculateShares(10001, users);
