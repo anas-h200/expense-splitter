@@ -19,5 +19,15 @@ public class Main {
 
             System.out.println(strategy.getClass().getSimpleName() + ": " + shares + " sum=" + sum);
         }
+
+        BalanceSheet sheet = new BalanceSheet();
+        sheet.adjust(u1, 500);
+        sheet.adjust(u1, 200);
+        sheet.adjust(u2, -300);
+
+        System.out.println(sheet.getBalance(u1));
+        System.out.println(sheet.getBalance(u2));
+        System.out.println(sheet.getBalance(u3));
+        System.out.println(sheet.getBalance(new User(1, "U1", "u1@abc.com")));
     }
 }
