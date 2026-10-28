@@ -18,6 +18,13 @@ public class Main {
         Expense snacks = new Expense(3, "Snacks", 6000, u3, SplitType.EXACT);
         sheet.addExpense(snacks, users, new ExactSplit(List.of(1000L, 2000L, 3000L)));
 
+        Expense bad = new Expense(4, "Bad", 0, u1, SplitType.EQUAL);
+        try{
+            sheet.addExpense(bad, users, new EqualSplit());
+        } catch (InvalidExpenseException e) {
+            System.out.println("Rejected: " + e.getMessage());
+        }
+
         sheet.printBalances();
         System.out.println("balanced: " + sheet.isBalanced());
     }

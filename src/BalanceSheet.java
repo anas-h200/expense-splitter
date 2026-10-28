@@ -16,6 +16,10 @@ public class BalanceSheet {
     }
 
     public void addExpense(Expense expense, List<User> participants, SplitStrategy strategy) {
+        if (expense.getAmount() <= 0) {
+            throw new InvalidExpenseException("Amount must be positive");
+        }
+
         List<Long> shares = strategy.calculateShares(expense.getAmount(), participants);
         User payer = expense.getPaidBy();
 
