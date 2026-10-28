@@ -7,25 +7,18 @@ public class Main {
         User u3 = new User(3, "U3", "u3@abc.com");
 
         List<User> users = List.of(u1, u2, u3);
-        List<SplitStrategy> strategies = List.of(new EqualSplit(), new PercentageSplit(List.of(50,30,20)), new ExactSplit(List.of(5000L, 3000L, 2000L)));
-
-        for (SplitStrategy strategy: strategies) {
-            List<Long> shares = strategy.calculateShares(10001, users);
-
-            long sum = 0;
-            for (long share: shares) {
-                sum += share;
-            }
-
-            System.out.println(strategy.getClass().getSimpleName() + ": " + shares + " sum=" + sum);
-        }
 
         BalanceSheet sheet = new BalanceSheet();
         Expense dinner = new Expense(1, "Dinner", 30000, u1, SplitType.EQUAL);
         sheet.addExpense(dinner, users, new EqualSplit());
 
-        System.out.println(sheet.getBalance(u1));
-        System.out.println(sheet.getBalance(u2));
-        System.out.println(sheet.getBalance(u3));
+        Expense cab = new Expense(2, "Cab", 15000, u2, SplitType.PERCENTAGE);
+        sheet.addExpense(cab, users, new PercentageSplit(List.of(50,30,20)));
+
+        Expense snacks = new Expense(3, "Snacks", 6000, u3, SplitType.EXACT);
+        sheet.addExpense(snacks, users, new ExactSplit(List.of(1000L, 2000L, 3000L)));
+
+        sheet.printBalances();
+        System.out.println("balanced: " + sheet.isBalanced());
     }
 }

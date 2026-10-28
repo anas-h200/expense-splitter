@@ -5,7 +5,7 @@ import java.util.List;
 public class BalanceSheet {
     private final Map<User, Long> balances = new HashMap<>();
 
-    public void adjust(User user, long delta) {
+    private void adjust(User user, long delta) {
         long currentBalance = balances.getOrDefault(user, 0L);
         currentBalance += delta;
         balances.put(user, currentBalance);
@@ -27,6 +27,32 @@ public class BalanceSheet {
 
             adjust(participant, -share);
             adjust(payer, share);
+        }
+    }
+
+    public boolean isBalanced() {
+        long total = 0;
+        for (long balance: balances.values()) {
+            total += balance;
+        }
+
+        return total == 0;
+    }
+
+    public void printBalances() {
+        for (Map.Entry<User, Long> entry: balances.entrySet()) {
+            User user = entry.getKey();
+            long balance = entry.getValue();
+
+            if (balance > 0) {
+                System.out.println(user.getName() + " is owed " + balance + " paise");
+            }
+            else if (balance < 0) {
+                System.out.println(user.getName() + " owes " + Math.abs(balance) + " paise");
+            }
+            else {
+                System.out.println(user.getName() + " is settled up.");
+            }
         }
     }
 }
