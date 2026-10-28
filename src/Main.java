@@ -25,6 +25,13 @@ public class Main {
             System.out.println("Rejected: " + e.getMessage());
         }
 
+        Expense noOne = new Expense(5, "NoOne", 1000, u1, SplitType.EQUAL);
+        try {
+            sheet.addExpense(noOne, List.of(), new EqualSplit());
+        } catch (InvalidExpenseException e) {
+            System.out.println("Rejected: " + e.getMessage());
+        }
+
         sheet.printBalances();
         System.out.println("balanced: " + sheet.isBalanced());
     }
