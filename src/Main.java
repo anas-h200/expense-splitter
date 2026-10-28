@@ -21,13 +21,11 @@ public class Main {
         }
 
         BalanceSheet sheet = new BalanceSheet();
-        sheet.adjust(u1, 500);
-        sheet.adjust(u1, 200);
-        sheet.adjust(u2, -300);
+        Expense dinner = new Expense(1, "Dinner", 30000, u1, SplitType.EQUAL);
+        sheet.addExpense(dinner, users, new EqualSplit());
 
         System.out.println(sheet.getBalance(u1));
         System.out.println(sheet.getBalance(u2));
         System.out.println(sheet.getBalance(u3));
-        System.out.println(sheet.getBalance(new User(1, "U1", "u1@abc.com")));
     }
 }
