@@ -32,6 +32,20 @@ public class Main {
             System.out.println("Rejected: " + e.getMessage());
         }
 
+        Expense badPct = new Expense(6, "BadPct", 1000, u1, SplitType.PERCENTAGE);
+        try {
+            sheet.addExpense(badPct, users, new PercentageSplit(List.of(50,30,30)));
+        } catch (InvalidSplitException e) {
+            System.out.println("Rejected: " + e.getMessage());
+        }
+
+        Expense differCount = new Expense(7, "DifferCount", 3000, u2, SplitType.PERCENTAGE);
+        try {
+            sheet.addExpense(differCount, users, new PercentageSplit(List.of(50,50)));
+        } catch (InvalidSplitException e) {
+            System.out.println("Rejected: " + e.getMessage());
+        }
+
         sheet.printBalances();
         System.out.println("balanced: " + sheet.isBalanced());
     }
