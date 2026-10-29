@@ -12,7 +12,7 @@ public class PercentageSplit implements SplitStrategy {
     public List<Long> calculateShares(long totalAmount, List<User> participants) {
         int n = participants.size();
 
-        if (percentages.size() != participants.size()) {
+        if (percentages.size() != n) {
             throw new InvalidSplitException("Percentages count does not match with participants count.");
         }
 

@@ -46,6 +46,20 @@ public class Main {
             System.out.println("Rejected: " + e.getMessage());
         }
 
+        Expense notExact = new Expense(8, "NotExact", 5000, u3, SplitType.EXACT);
+        try {
+            sheet.addExpense(notExact, users, new ExactSplit(List.of(1000L,1500L,2000L)));
+        } catch (InvalidSplitException e) {
+            System.out.println("Rejected: " + e.getMessage());
+        }
+
+        Expense countMismatch = new Expense(9, "CountMismatch", 3500, u2, SplitType.EXACT);
+        try {
+            sheet.addExpense(countMismatch, users, new ExactSplit(List.of(1000L, 2000L)));
+        } catch (InvalidSplitException e) {
+            System.out.println("Rejected: " + e.getMessage());
+        }
+
         sheet.printBalances();
         System.out.println("balanced: " + sheet.isBalanced());
     }
