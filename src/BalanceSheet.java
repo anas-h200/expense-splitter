@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -61,5 +62,48 @@ public class BalanceSheet {
                 System.out.println(user.getName() + " is settled up.");
             }
         }
+    }
+
+    public List<Settlement> getSettlements() {
+        List<User> creditors = new ArrayList<>();
+        List<User> debtors = new ArrayList<>();
+
+        for (Map.Entry<User, Long> entry: balances.entrySet()) {
+            User user = entry.getKey();
+            long balance = entry.getValue();
+
+            if (balance > 0) {
+                creditors.add(user);
+            }
+            else if (balance < 0) {
+                debtors.add(user);
+            }
+        }
+
+        Map<User, Long> remaining = new HashMap<>(balances);
+        int i = 0;
+        int j = 0;
+
+        List<Settlement> result = new ArrayList<>();
+
+        while (i < debtors.size() && j < creditors.size()) {
+            User debtor = debtors.get(i);
+            User creditor = creditors.get(j);
+
+            long owed = -remaining.get(debtor);
+            long due = remaining.get(creditor);
+            long pay = Math.min(owed, due);
+
+            result.add(new Settlement(debtor, creditor, pay));
+            long newDebtorBalance = remaining.get(debtor) + pay;
+            long newCreditorBalance = remaining.get(creditor) - pay;
+            remaining.put(debtor, newDebtorBalance);
+            remaining.put(creditor, newCreditorBalance);
+
+            if (newDebtorBalance == 0) i++;
+            if (newCreditorBalance == 0) j++;
+        }
+
+        return result;
     }
 }
