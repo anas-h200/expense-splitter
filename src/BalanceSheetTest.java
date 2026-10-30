@@ -19,4 +19,26 @@ public class BalanceSheetTest {
         assertEquals(-10000, sheet.getBalance(u2));
         assertTrue(sheet.isBalanced());
     }
+
+    @Test
+    void zeroAmountIsRejected() {
+        User u1 = new User(1, "U1", "u1@abc.com");
+        List<User> users = List.of(u1);
+
+        BalanceSheet sheet = new BalanceSheet();
+        Expense bad = new Expense(1, "Bad", 0, u1, SplitType.EQUAL);
+
+        assertThrows(InvalidExpenseException.class, () -> sheet.addExpense(bad, users, new EqualSplit()));
+    }
+
+    @Test
+    void emptyParticipantsIsRejected() {
+        User u1 = new User(1, "U1", "u1@abc.com");
+        List<User> users = List.of();
+
+        BalanceSheet sheet = new BalanceSheet();
+        Expense noOne = new Expense(1, "NoOne", 1000, u1, SplitType.EQUAL);
+
+        assertThrows(InvalidExpenseException.class, () -> sheet.addExpense(noOne, users, new EqualSplit()));
+    }
 }
