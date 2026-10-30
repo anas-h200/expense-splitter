@@ -63,7 +63,6 @@ public class Main {
         sheet.printBalances();
         System.out.println("balanced: " + sheet.isBalanced());
 
-        Settlement s = new Settlement(u2, u1, 1500);
-        System.out.println(s);
+        sheet.getSettlements();
     }
 }

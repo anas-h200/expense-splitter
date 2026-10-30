@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -61,5 +62,25 @@ public class BalanceSheet {
                 System.out.println(user.getName() + " is settled up.");
             }
         }
+    }
+
+    public List<Settlement> getSettlements() {
+        List<User> creditors = new ArrayList<>();
+        List<User> debtors = new ArrayList<>();
+
+        for (Map.Entry<User, Long> entry: balances.entrySet()) {
+            User user = entry.getKey();
+            long balance = entry.getValue();
+
+            if (balance > 0) {
+                creditors.add(user);
+            }
+            else if (balance < 0) {
+                debtors.add(user);
+            }
+        }
+
+        System.out.println("creditors: " + creditors.size() + " and " + "debtors: " + debtors.size());
+        return new ArrayList<>();
     }
 }
