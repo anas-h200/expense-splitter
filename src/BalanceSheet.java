@@ -80,7 +80,30 @@ public class BalanceSheet {
             }
         }
 
-        System.out.println("creditors: " + creditors.size() + " and " + "debtors: " + debtors.size());
-        return new ArrayList<>();
+        Map<User, Long> remaining = new HashMap<>(balances);
+        int i = 0;
+        int j = 0;
+
+        List<Settlement> result = new ArrayList<>();
+
+        while (i < debtors.size() && j < creditors.size()) {
+            User debtor = debtors.get(i);
+            User creditor = creditors.get(j);
+
+            long owed = -remaining.get(debtor);
+            long due = remaining.get(creditor);
+            long pay = Math.min(owed, due);
+
+            result.add(new Settlement(debtor, creditor, pay));
+            long newDebtorBalance = remaining.get(debtor) + pay;
+            long newCreditorBalance = remaining.get(creditor) - pay;
+            remaining.put(debtor, newDebtorBalance);
+            remaining.put(creditor, newCreditorBalance);
+
+            if (newDebtorBalance == 0) i++;
+            if (newCreditorBalance == 0) j++;
+        }
+
+        return result;
     }
 }

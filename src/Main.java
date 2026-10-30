@@ -63,6 +63,10 @@ public class Main {
         sheet.printBalances();
         System.out.println("balanced: " + sheet.isBalanced());
 
-        sheet.getSettlements();
+        List<Settlement> settlements = sheet.getSettlements();
+        for (Settlement s : settlements) {
+            System.out.println(s);
+        }
+        sheet.printBalances();
     }
 }
